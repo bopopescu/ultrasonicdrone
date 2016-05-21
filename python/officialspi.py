@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from __future__ import print_function
 from Adafruit_BBIO.SPI import SPI
 import time
