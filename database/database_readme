@@ -14,6 +14,32 @@
 - Create New Table: CREATE TABLE (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, timeStamp TIMESTAMP, distance DECIMAL(p,s), velocity DECIMAL(p,s)); 
 - Add to Table: INSERT INTO '<name>' ('id','timeStamp', 'distance', 'velocity') VALUES(NULL, X, Y, Z)
 - Delete/Clear: TRUNCATE TABLE <name>
+- Install Python SQL Library: https://sourceforge.net/projects/mysql-python/
+  -$ gunzip MySQL-python-1.2.2.tar.gz
+  -$ tar -xvf MySQL-python-1.2.2.tar
+  -$ cd MySQL-python-1.2.2
+  -$ python setup.py build
+  -$ python setup.py install
+
+### To Do: MongoDb as Python Communcations 
+- Create: 
+- Add: 
+- Find a command that takes numbers instead of strings
+
+### To Do: Python to MySql 
+- Library Needed: import_mysql, import sys, import MySQLdb as mdb
+- Connecting = connection = _mysql.connect("localhost", "<var1>", ...,"<var2>", "<database name>") 
+- Start and Stop Logging
+- Access: cur = con.cursor() 
+  -cur.execute("one of the things from the Linux Info")
+    -each instruction should be a varaible to make code easier 
+  -cur.execute ("SELECT * FROM <name>")
+    -rows = cur.fetchall() 
+      -can be fetchone(): for displaying one value instead of graph or trends 
+    -for row in rows: print row
+  -Works best if database is created and start and delete tables inside the database 
+
+
 
 ### Future Downloads for Web Communication
 - Node.js
