@@ -45,3 +45,26 @@
 - Node.js
 - MongoDB
 - PHP
+
+### Helpful Mongo Commands for Future Web and Database Communications 
+- Install: sudo apt-get install mongodb-org
+- Connect/Start: mongo --port <name> --dbpath=./<directory name> 
+- Get or Find: var mango = require(‘mongobd’).MongoClient 
+	mongo.connect(url, function(err, db){
+}
+	-url: mongodb://localhost:<port>/<db name>
+- Get Collection: db.collection(‘<collection name>’) 
+- Get Document:  collection.find({
+Name: ‘name’
+}).toArray(function(err, documents) {
+}) 
+- Get a Project: 
+collection.find({
+Name: ‘name’}, { 
+Item: n, 
+Item: n, 
+Item: n
+}).toArray(function(err, documents){
+})
+- Remember to close things
+
