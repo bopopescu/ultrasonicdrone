@@ -1,13 +1,31 @@
-<head>
-  <link rel="stylesheet" type="text/css" href="mystyles.css" media="screen" />
-  <script type="text/javascript" src="myscripts.js"></script>
-  <script type="text/javascript" src="smoothie.js"></script>
-</head>
+<!DOCTYPE html>
+<!-- I want to die -->
+<html>
+  <head>
+    <script type="text/javascript" src="smoothie.js"></script>
+    <link rel="stylesheet" type="text/css" href="mystyles.css" media="screen" />
+    <script type="text/javascript">
 
+      // Randomly add a data point every 500ms
+      var series = new TimeSeries();
+      setInterval(function(){ 
+  	var n = Math.random().toFixed(2); 
+  	document.getElementById("height").innerHTML = n; 
+  	series.append(new Date().getTime(), n);
+	}, 400); 
 
-<h1 align = "Center">Drone Dis-play</h1>
-<p id = "height">Hello</p>
-<p id = "test">Test</p>
-<canvas id="smoothie-chart" width="1250" height="250">
-  
- 
+      
+      function createTimeline() {
+        var chart = new SmoothieChart();
+        chart.addTimeSeries(series, { strokeStyle: 'rgba(0, 255, 255, 1)', fillStyle: 'rgba(0, 255, 255, 0.2)', lineWidth: 4 });
+        chart.streamTo(document.getElementById("chart"), 500);
+      }
+    </script>
+  </head>
+  <body onload="createTimeline()">
+	<h1 align = "Center">Drone Dis-play</h1>
+	<p id = "height">Hello</p>
+        <canvas id="chart" width="1250" height="250"></canvas>
+
+  </body>
+</html>
