@@ -3,3 +3,9 @@ Website Readme
 Current Owner: None
 
 Beta Versions of Website: https://github.com/hal00alex/Drone_Test/tree/master/WebAppCode
+
+Smoothie.js is what draws the graph. 
+
+Need to go back and add the javascript for SQL on the index.htm 
+
+CSS controls centering and font size 
