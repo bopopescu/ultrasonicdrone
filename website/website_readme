@@ -5,3 +5,9 @@ Current Owner: None
 Import Graph Drawning JS First: <script type="text/javascript" src="smoothie.js"></script>
 CSS that centers everything: <link rel="stylesheet" type="text/css" href="mystyles.css" media="screen" />
 Start of Own Script: <script type="text/javascript">
+Updates Page without CLickign Refresh: setInterval
+Gets SQL database: function AjaxFun()
+-need to change getcustomer 
+-might need to parse? 
+-might want to go back to a .txt file 
+-might need to change "test" 
