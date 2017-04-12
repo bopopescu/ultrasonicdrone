@@ -12,11 +12,11 @@
     
 <link rel="stylesheet" type="text/css" href="mystyles.css" media="screen" />
  
-<?php include ('Read.php') ?> 
+<?php include ('Read.php') ?>
 <script type="text/javascript">
 
    
-var h;   
+var h = 1;   
 // Randomly add a data point every 500ms
       
 var series = new TimeSeries();
@@ -27,12 +27,12 @@ setInterval(function(){
   	
 	document.getElementById("height").innerHTML = n; 
   
-	//document.getElementById("test").innerHTML = h; 	
+	h = '<?php echo $query ;?>'; 
+	document.getElementById("test").innerHTML = h; 	
 	series.append(new Date().getTime(), n);
 	}, 400); 
 	AjaxFun();
 
-      
       
 	function createTimeline() {
         
@@ -41,10 +41,13 @@ setInterval(function(){
 		chart.addTimeSeries(series, { strokeStyle: 'rgba(0, 255, 255, 1)', fillStyle: 'rgba(0, 255, 255, 0.2)', lineWidth: 4 });
         
 		chart.streamTo(document.getElementById("chart"), 500);
-      }
+      
+}
    
 function AjaxFun(){
+       
         var xmlhttp; 
+	
 	if (window.XMLHttpRequest) {
             // code for IE7+, Firefox, Chrome, Opera, Safari
             xmlhttp = new XMLHttpRequest();
@@ -54,10 +57,12 @@ function AjaxFun(){
         }
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("test").innerHTML = this.responseText;
+		//alert(this.responseText); 
+		document.getElementById("test1").innerHTML = this.responseText; 
+                //h = this.responseText;
             }
         };
-	xmlhttp.open("GET", "Read.php?q="+str, true);
+	xmlhttp.open("GET", "Read.php", true);
 	xmlhttp.send();
 }
 </script>
@@ -71,6 +76,8 @@ function AjaxFun(){
 <p id = "height">Hello</p>
   
 <p id = "test">Hello</p>
+ 
+<p id = "test1">Hello</p>
        
 <canvas id="chart" width="1250" height="250"></canvas>
 
