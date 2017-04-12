@@ -6,6 +6,8 @@
   
 <head>
     
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.0.min.js"></script>
 <script type="text/javascript" src="smoothie.js"></script>
     
 <link rel="stylesheet" type="text/css" href="mystyles.css" media="screen" />
@@ -26,22 +28,35 @@ setInterval(function(){
 	document.getElementById("height").innerHTML = n; 
   
 	document.getElementById("test").innerHTML = h; 	
-	series.append(new Date().getTime(), n); }, 400); 
+	series.append(new Date().getTime(), n);
+	}, 400); 
 	AjaxFun();
-   
+
+      
+      
 	function createTimeline() {
         
 		var chart = new SmoothieChart();
         
 		chart.addTimeSeries(series, { strokeStyle: 'rgba(0, 255, 255, 1)', fillStyle: 'rgba(0, 255, 255, 0.2)', lineWidth: 4 });
         
-		chart.streamTo(document.getElementById("chart"), 500); }
+		chart.streamTo(document.getElementById("chart"), 500);
+      }
    
 function AjaxFun(){
-  var xhttp; 
-	xhttp = new XMLHttpRequest();
-	h = xhttp.responseText; 
-	document.getElementById("test").innerHTML= xhttp.responseText; 
+        var xmlhttp; 
+	if (window.XMLHttpRequest) {
+            // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            // code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("test").innerHTML = this.responseText;
+            }
+        };
 	xhttp.open("GET", "Read.php?q="+str, true);
 	xhttp.send();
 }
