@@ -9,9 +9,9 @@ import peakutils
 spi = SPI(0,0)
 spi.mode = 1
 spi.bpw = 8
-spi.msh = 8000000
+spi.msh = 5000000
 UART.setup("UART5")
-ser = serial.Serial(port="/dev/tty5", baudrate=19200)
+ser = serial.Serial(port="/dev/tty5", baudrate=19200, bytesize=8, stopbits=1)
 ser.close()
 ser.open()
 def put_in_reset():
@@ -120,64 +120,38 @@ def read_FIFO_buf():
 	resp = read_this_fifo(2, 255)
 	fifo.append(int(resp[1]))
 	return fifo
+def uart_config():
+	print "\nuart config"
+	print spi.xfer2([int("13",16), int("98",16), int("BC",16)])
+def eeprom_ctl_write():
+	print "\neeprom ctl write"
+	print spi.xfer2([int("1A",16), int("C0",16), int("01",16)])
+def eeprom_cache_write():
+	print "\neeprom cache write"
+	print spi.xfer2([int("0E",16), int("1F",16), int("01",16)])
+def uart_config_read():
+	print "\nread config uart"
+	print spi.xfer2([int("10",16), int("98",16), int("00",16)])
+def eeprom_ctl_read():
+	print"\ncntrl read eeprom"
+	resp = spi.xfer2([int("19",16), int("C0",16), int("00",16)])
+	print(resp)
+	return resp
 
-put_in_reset()
-wait()
-put_out_reset()
-wait()
-if (ser.isOpen()):
+eeprom_cache_write()
+eeprom_ctl_write()
+resp = eeprom_ctl_read()
+while(resp[1] != 0):
+	resp = eeprom_ctl_read()
+	
+spi.close()
+if ser.isOpen():
 	print"serial open"
 print str(int("00550100", 16))
 ser.write("00550100")
 print "command sent"
 resp = ser.read()
+print "read"
 print resp
 
-
-
-
-
-
-
-
-
-
-"""
-init()
-wait()
-resp = []
-fifo = []
-resp = read_stat_reg()
-wait()
-print resp
-while((resp[1] != 0) | (resp[2] != 0)):
-	resp = read_stat_reg()
-	wait()
-config_power()
-set_fifo_ctl()
-#write_dac_ctl()
-
-if ser.isOpen():
-	print "serial is open"
-
-
-
-for num in range (0,1):
-	init_burst()
-	wait()
-	wait()
-	wait()
-	fifo = read_FIFO_buf()
-	print fifo
-	read_fifo()
-	rearm_burst()
-	fifoarray = np.array(fifo, dtype=float)
-	indices = peakutils.indexes(fifoarray, thres=.85, min_dist=15)
-	print indices
-	for i in indices:
-		print("%s meters" % str(float((40 * int(i) * 1000000) * (343/2))/1000000000000))
-	for j in range (0,10):
-		wait()
-put_out_reset()
-"""
 end_spi()

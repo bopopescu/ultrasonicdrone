@@ -5,7 +5,7 @@ import scipy as sp
 import peakutils
 
 spi = SPI(0,0)
-spi.mode = 1
+spi.mode =1
 spi.bpw = 8
 spi.msh = 8000000
 
@@ -115,6 +115,8 @@ def read_FIFO_buf():
 	resp = read_this_fifo(2, 255)
 	fifo.append(int(resp[1]))
 	return fifo
+
+wait()
 put_in_reset()
 wait()
 init()
