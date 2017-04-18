@@ -1,3 +1,4 @@
+#changed tutoiral code, works for 2.7x and 3.4.x 
 #Download opitions: be in python shell
     #MySQL Yum: sudo yum install mysql-connector-python -> https://dev.mysql.com/downloads/repo/yum/
     #Tar from Source: tar xzf mysql-connector-python-2.1.5.tar.gz 
