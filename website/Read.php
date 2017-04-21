@@ -3,7 +3,7 @@
 	$conn = mysql_connect('localhost', 'root', 'ultra', 'drone_data');
 	if(!$conn){
 	mysql_close($conn);
-	echo ('die'); 
+	echo (json_encode('die')); 
 	//die ('Error');
 	mysql_close($conn);
 	exit; 
@@ -15,11 +15,12 @@
 	exit; 
 	}
 	//get
-        $find = "SELECT' 'height' FROM 'data' ORDER BY 'time' DESC LIMIT 1";
+        $find = "SELECT height FROM data ORDER BY time DESC LIMIT 1";
 	$query = mysql_query($find, $conn);
 
 	if($query){
-	echo($query); 
+	echo(json_encode($query)); 
+	//echo json_encode($query); 
 	mysql_close($conn);
         exit; 
 	} 
