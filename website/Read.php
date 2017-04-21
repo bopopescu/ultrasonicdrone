@@ -3,7 +3,7 @@ function getLast(){
 	//connect
 	$conn = mysql_connect('localhost', 'root', 'ultra', 'drone_data');
 	if(!$conn){
-	mysqli_close($conn);
+	mysql_close($conn);
 	echo ('die'); 
 	exit; 
 	} 	
