@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<!-- I want to die -->
+
+<html>
+  
+<head>
+    
+<script type="text/javascript" src="smoothie.js"></script>
+    
+<link rel="stylesheet" type="text/css" href="mystyles.css" media="screen" />
+    
+<script type="text/javascript">
+
+   
+var h;   
+// Randomly add a data point every 500ms
+      
+var series = new TimeSeries();
+      
+setInterval(function(){ 
+  	
+	var n = Math.random().toFixed(2); 
+ 
+        AjaxFun();  	
+	document.getElementById("height").innerHTML = n; 
+ 
+	document.getElementById("test").innerHTML = h; 	
+	series.append(new Date().getTime(), n);
+	}, 400); 
+
+      
+      
+	function createTimeline() {
+        
+		var chart = new SmoothieChart();
+        
+		chart.addTimeSeries(series, { strokeStyle: 'rgba(0, 255, 255, 1)', fillStyle: 'rgba(0, 255, 255, 0.2)', lineWidth: 4 });
+        
+		chart.streamTo(document.getElementById("chart"), 500);
+      }
+   
+function AjaxFun(){
+        var xhttp; 
+	xhttp = new XMLHttpRequest();
+        //need to change "getcustomer" and "test" later
+	xhttp.open("GET", "getcustomer.aspx?sql=" + document.getElementById("test").value, true);
+	h = xhttp.open("GET", "getcustomer.aspx?sql=" + document.getElementById("test").value, true);
+	xhttp.send();
+}
+</script>
+  
+</head>
+  
+<body onload="createTimeline()">
+
+<h1 align = "Center">Drone Dis-play</h1>
+	
+<p id = "height">Hello</p>
+  
+<p id = "test">Hello</p>
+       
+<canvas id="chart" width="1250" height="250"></canvas>
+
+  
+</body>
+
+</html>
