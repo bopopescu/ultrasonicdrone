@@ -3,7 +3,7 @@
 	$conn = mysql_connect('localhost', 'root', 'ultra', 'drone_data');
 	if(!$conn){
 	mysql_close($conn);
-	echo ('die'); 
+	echo (json_encode('die')); 
 	//die ('Error');
 	mysql_close($conn);
 	exit; 
