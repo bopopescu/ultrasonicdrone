@@ -17,9 +17,13 @@
 	//get
         $find = "SELECT height FROM data ORDER BY time DESC LIMIT 1";
 	$query = mysql_query($find, $conn);
+	$row = array(); 
 
 	if($query){
-	echo(json_encode($query)); 
+	while($result = mysql_fetch_assoc($query)){
+		$row[] = $result; 
+	} 
+	echo(json_encode($row)); 
 	//echo json_encode($query); 
 	mysql_close($conn);
         exit; 
