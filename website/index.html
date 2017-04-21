@@ -12,7 +12,7 @@
     
 <link rel="stylesheet" type="text/css" href="mystyles.css" media="screen" />
  
-<?php include ('Read.php') ?>
+<?php include ('Read2.php') ?>
 <script type="text/javascript">
 
    
@@ -33,7 +33,7 @@ setInterval(function(){
 
  	
 	series.append(new Date().getTime(), n);
-	}, 1000);     
+	}, 300);     
 	function createTimeline() {
         
 		var chart = new SmoothieChart();
@@ -47,7 +47,7 @@ setInterval(function(){
 function AjaxFun(){
         xmlhttp = new XMLHttpRequest();
 	h = "AJAX"; 
-	xmlhttp.open("GET", "Read.php", true);
+	xmlhttp.open("GET", "Read2.php", true);
 	//h = 43; 
 	xmlhttp.onreadystatechange = handleRequestStateChange; 
 	//h = -1; 
