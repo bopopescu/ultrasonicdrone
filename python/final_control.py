@@ -1,4 +1,4 @@
-#/bin/sys/python
+#!/usr/bin/python
 from __future__ import print_function
 from decimal import Decimal
 from datetime import datetime, date, timedelta
@@ -7,11 +7,10 @@ import mysql.connector
 import random
 
 
-cnx = mysql.connector.connect(user='root', password = 'ultra', host = 'local host', database='employees')
+cnx = mysql.connector.connect(user='root', password = 'ultra', host = 'localhost', database='drone_data')
 
 # Get two cursors
 curA = cnx.cursor(buffered=True)
-curB = cnx.cursor(buffered=True)
 
 #vars
 date = str(datetime.now())
@@ -20,7 +19,7 @@ speed = .12
 fifo = 10
 
 
-while(true):
+while(1):
 	direction = random.randint(0,1)
 	dif = random.randint(0,7)
 	if(direction == 0):
@@ -36,8 +35,8 @@ while(true):
 	speed = float((height-oldheight)/.3)
 	date = str(datetime.now())
 	# Insert command 
-	query = ("INSERT INTO data VALUES (%s, %s, %s)", (date, height, speed))
-	curA.execute(query)
+	query = ("INSERT INTO data VALUES (%s, %s, %s)")
+	curA.execute(query,(date, height, speed))
 
 
 	# Commit the changes
