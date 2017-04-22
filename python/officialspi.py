@@ -3,11 +3,23 @@ import time
 import numpy as np
 import scipy as sp
 import peakutils
+from __future__ import print_function
+from decimal import Decimal
+from datetime import datetime, date, timedelta
+import mysql.connector
+import random
 
 spi = SPI(0,0)
 spi.mode = 1
 spi.bpw = 8
 spi.msh = 8000000
+cnx = mysql.connector.connect(user='root', password = 'ultra', host = 'localhost', database='drone_data')
+curA = cnx.cursor(buffered=True)
+date = str(datetime.now())
+height = float((40 * int(10)) * (343/2))/1000000
+speed = .12
+fifo = 10
+temp = 1.0
 
 def put_in_reset():
 	print "\nput in reset"
@@ -109,6 +121,11 @@ def init():
 	print spi.xfer2([int("1A",16), int("B5",16), int("01",16)])
 	print spi.xfer2([int("1A",16), int("B7",16), int("02",16)])
 	print spi.xfer2([int("1A",16), int("E2",16), int("0B",16)])
+	print spi.xfer2([int("1A",16), int("E5",16), int("01",16)])
+def read_temp():
+	resp = spi.xfer2([int("19",16), int("B4",16), int("00",16)])
+	print resp
+	return resp[1]
 
 put_in_reset()
 wait()
@@ -126,48 +143,56 @@ while((resp[1] != 0) | (resp[2] != 0)):
 	wait()
 config_power()
 set_fifo_ctl()
-#write_dac_ctl()
-init_burst()
-wait()
-#init_burst()
-#wait()
-print "checking response"
-print read_this_fifo(0,0)
-while((this != 3)):
-	resp = read_this_fifo(this, that)
+i=0
+while(i != 1):
+	init_burst()
+	wait()
+	read_this_fifo(0,0)
+	while((this != 3)):
+		resp = read_this_fifo(this, that)
+		fifo.append(int(resp[1]))
+		if (that == 255):
+			this =1+this
+			that = 0
+		else:
+			that = that + 1
+	resp = read_this_fifo(2, 255)
 	fifo.append(int(resp[1]))
-	if (that == 255):
-		this =1+this
-		that = 0
+	read_fifo()
+	rearm_burst()
+#	print len(fifo)
+#	print fifo
+	fifoarray = np.array(fifo, dtype=float)
+#	print fifoarray
+	indices = peakutils.indexes(fifoarray, thres=.9, min_dist=30)
+#	print("")	
+#	for i in indices:
+#		print(float((40 * int(i)) * (343/2))/1000000)
+	if (len(indices) == 1):
+		fifo_val = indices[0]
+	elif(len(indices) == 2):
+		fifo_val = indices[1]
+	elif(len(indices) == 3):
+		fifo_val = indices[1]
 	else:
-		that = that + 1
-resp = read_this_fifo(2, 255)
-fifo.append(int(resp[1]))
-read_fifo()
-rearm_burst()
-print len(fifo)
-print fifo
-fifoarray = np.array(fifo, dtype=float)
-print fifoarray
-indices = peakutils.indexes(fifoarray, thres=.9, min_dist=30)
-print indices
-last = 0
-k = 0
-idx = []
-for ent in fifoarray:
-	if (ent > last):
-		last = ent
-		idx = []
-		idx.append(k)
-	if (ent == last):
-		idx.append(k)
-	k = k + 1
-print idx
-print ("idx then indices")	
-for i in idx:
-	print(fifoarray[i])
-print("")	
-for i in indices:
-	print(float((40 * int(i) * 1000000) * (343/2))/1000000000000 )
+		fifo_val = indices[2]
+
+
+	oldheight = height
+	height = float((40 * int(fifo_val)) * (343/2))/1000000
+	speed = float((height-oldheight)/.3)
+	date = str(datetime.now())
+	temp = float(read_temp() * 1.75 + 30)
+	# Insert command 
+	delete = ("DELETE FROM data ORDER BY time desc LIMIT 1")
+	curA.execute(delete)
+	cnx.commit()
+	query = ("INSERT INTO data VALUES (%s, %s, %s, %s)")
+	curA.execute(query,(date, height, speed, temp))
+	time.sleep(0.3)
+	cnx.commit()
+	i=1
+
+
 put_out_reset()
 end_spi()
