@@ -25,14 +25,14 @@ setInterval(function(){
    	
 	var n = Math.random().toFixed(2); 
   	
-	document.getElementById("height").innerHTML = n;
+	//document.getElementById("height").innerHTML = n;
   
 	document.getElementById("test").innerHTML = h; 
 	document.getElementById("test1").innerHTML = t;
 	AjaxFun();
 
  	
-	series.append(new Date().getTime(), n);
+	series.append(new Date().getTime(), t);
 	}, 300);     
 	function createTimeline() {
         
