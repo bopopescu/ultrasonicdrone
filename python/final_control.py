@@ -20,8 +20,8 @@ fifo = 10
 
 
 while(1):
-	direction = random.randint(0,1)
-	dif = random.randint(0,7)
+	direction = random.randint(0,3)
+	dif = random.randint(0,20)
 	if(direction == 0):
 		if(fifo >= dif):
 			fifo = fifo - dif
@@ -34,9 +34,13 @@ while(1):
 	height = float((40 * int(fifo)) * (343/2))/1000000
 	speed = float((height-oldheight)/.3)
 	date = str(datetime.now())
+	temp = 27.3
+	delete = ("DELETE FROM data ORDER BY time desc LIMIT 1")
+	curA.execute(delete)
+	cnx.commit()
 	# Insert command 
-	query = ("INSERT INTO data VALUES (%s, %s, %s)")
-	curA.execute(query,(date, height, speed))
+	query = ("INSERT INTO data VALUES (%s, %s, %s, %s)")
+	curA.execute(query,(date, height, speed, temp))
 
 
 	# Commit the changes
