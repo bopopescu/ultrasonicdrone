@@ -2,3 +2,9 @@ p{
   text-align:center;
   font-size: 32px; 
 }
+
+th{
+  height: 30px; 
+  font-size: 20px;
+  vertical-align: bottom; 
+}
