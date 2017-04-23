@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 
 <!-- I want to die -->
-
 <html>
   
 <head>
@@ -14,58 +13,90 @@
  
 <?php include ('Read2.php') ?>
 <script type="text/javascript">
-
    
 var h = 0; 
+var s = 0; 
 var t = 0;  
 var xmlhttp;        
 var series = new TimeSeries();
       
 setInterval(function(){  
-   	
-	var n = Math.random().toFixed(2); 
-  	
-	//document.getElementById("height").innerHTML = n;
-  
-	document.getElementById("height").innerHTML = t; 
-	document.getElementById("speed").innerHTML = t;
+   	document.getElementById("height").innerHTML = h; 
+	document.getElementById("speed").innerHTML = s;
 	document.getElementById("temp").innerHTML = t;
-	AjaxFun();
-
- 	
-	series.append(new Date().getTime(), t);
-	}, 300);     
+	AjaxFunHeight();
+	series.append(new Date().getTime(), h);
+	}, 300);   
 	function createTimeline() {
+	var chart = new SmoothieChart();
         
-		var chart = new SmoothieChart();
+	chart.addTimeSeries(series, { strokeStyle: 'rgba(0, 255, 255, 1)', fillStyle: 'rgba(0, 255, 255, 0.2)', lineWidth: 4 });
         
-		chart.addTimeSeries(series, { strokeStyle: 'rgba(0, 255, 255, 1)', fillStyle: 'rgba(0, 255, 255, 0.2)', lineWidth: 4 });
-        
-		chart.streamTo(document.getElementById("chart"), 500);
+	chart.streamTo(document.getElementById("chart"), 500);
       
 }
+
+setInterval(function(){
+	AjaxFunSpeed(); 
+},400); 
+
+setInterval(function(){
+	AjaxFunTemp(); 
+},500); 
    
-function AjaxFun(){
-        xmlhttp = new XMLHttpRequest();
-	h = "AJAX"; 
-	xmlhttp.open("GET", "Read2.php", true);
-	//h = 43; 
-	xmlhttp.onreadystatechange = handleRequestStateChange; 
-	//h = -1; 
+function AjaxFunHeight(){
+        xmlhttp = new XMLHttpRequest(); 
+	xmlhttp.open("GET", "ReadHeight.php", true);
+	xmlhttp.onreadystatechange = handleRequestStateChange1; 
 	xmlhttp.send();
 }
 
-var handleRequestStateChange = function(){ 
-	h = "Requested"; 
-  if(xmlhttp.readyState == 4 && xmlhttp.status==200){
-	h = "Connected"; 
-	t = xmlhttp.responseText; 
+
+var handleRequestStateChange1 = function(){  
+  if(xmlhttp.readyState == 4 && xmlhttp.status==200){ 
+	h = xmlhttp.responseText; 
+	
   }
    else{
-	h = "Not Ready"; 
-	t = "Check Status Too"; 
+	//h = "Not Ready"; 
 	}
 }
+
+function AjaxFunSpeed(){
+        xmlhttp = new XMLHttpRequest(); 
+	xmlhttp.open("GET", "ReadSpeed.php", true);
+	xmlhttp.onreadystatechange = handleRequestStateChange2; 
+	xmlhttp.send();
+}
+
+var handleRequestStateChange2 = function(){  
+  if(xmlhttp.readyState == 4 && xmlhttp.status==200){ 
+	s = xmlhttp.responseText; 
+	
+  }
+   else{
+	//h = "Not Ready"; 
+	}
+}
+
+function AjaxFunTemp(){
+        xmlhttp = new XMLHttpRequest(); 
+	xmlhttp.open("GET", "ReadTemp.php", true);
+	xmlhttp.onreadystatechange = handleRequestStateChange3; 
+	xmlhttp.send();
+}
+
+var handleRequestStateChange3 = function(){  
+  if(xmlhttp.readyState == 4 && xmlhttp.status==200){ 
+	t = xmlhttp.responseText; 
+	
+  }
+   else{
+	//h = "Not Ready"; 
+	}
+}
+
+
 
 </script>
   
