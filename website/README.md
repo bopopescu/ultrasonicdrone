@@ -7,5 +7,4 @@ No one reads my comments or really listens to me, so maybe another README will h
 - Performs 3 Ajax calls to parse in the 3 columns (ReadHeight, ReadTemp, ReadSpeed) into table
 - Read2 is back up of php calls 
 
-Hopes this documenntation helps as I spent the past 3 semesters wanting to hurt myself,
-and all the team wants is for me to code and Alec to get annoyed with me. 
+Hopes this documenntation helps as the team wants for me to code and Alec to get annoyed with me even though my friend died and my grandma is sick, so I might have to leave soon. 
