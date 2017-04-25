@@ -1,9 +1,9 @@
+from __future__ import print_function
 from Adafruit_BBIO.SPI import SPI
 import time
 import numpy as np
 import scipy as sp
 import peakutils
-from __future__ import print_function
 from decimal import Decimal
 from datetime import datetime, date, timedelta
 import mysql.connector
@@ -100,7 +100,7 @@ def config_power():
 # 	print spi.xfer2([int("19",16), int("AE", 16), int("00",16)])
 
 def init():
-	print "\ninitializing"
+	print ("\ninitializing")
 	print (spi.xfer2([int("1A",16),int("92",16), int("03",16)]))
 	print (spi.xfer2([int("1A",16),int ("93",16), int("2B",16)]))
 	print (spi.xfer2([int("1A",16), int("94",16), int("EC",16)]))
@@ -137,14 +137,14 @@ this = 0
 that = 1
 resp = read_stat_reg()
 wait()
-print resp
+print (resp)
 while((resp[1] != 0) | (resp[2] != 0)):
 	resp = read_stat_reg()
 	wait()
 config_power()
 set_fifo_ctl()
 i=0
-while(i != 1):
+while(i != 100):
 	init_burst()
 	wait()
 	read_this_fifo(0,0)
@@ -184,14 +184,14 @@ while(i != 1):
 	date = str(datetime.now())
 	temp = float(read_temp() * 1.75 + 30)
 	# Insert command 
-	delete = ("DELETE FROM data ORDER BY time desc LIMIT 1")
-	curA.execute(delete)
-	cnx.commit()
+	#delete = ("DELETE FROM data ORDER BY time desc LIMIT 1")
+	#curA.execute(delete)
+	#cnx.commit()
 	query = ("INSERT INTO data VALUES (%s, %s, %s, %s)")
 	curA.execute(query,(date, height, speed, temp))
 	time.sleep(0.3)
 	cnx.commit()
-	i=1
+	i+=1
 
 
 put_out_reset()
